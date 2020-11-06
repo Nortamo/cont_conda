@@ -18,8 +18,7 @@ Don't use in production**
     - Initial copy to build directory might take quite a while.
 3. Generate a deploy folder which contains all the needed components `generate_bin.sh`
     - By default The script will generate executable wrappers for everything in `path_to_target/bin`
-    - Remove them after generation or comment out the loop in `generate_bin.sh` if not relevant.
-    - Then you can create your own wrapper
+    - You also disable this and can create your own wrapper
 4. Move the deploy folder where you want it and set the `PATH` variable to the bin folder
 
 
@@ -40,4 +39,14 @@ depends on other software installations in `/appl` and is also originally instal
 mask the `--overlay` mount. The singularity images might need changes to work for software environments with more complicated dependencies. 
 
 ## Package new installation
-
+  
+1. Build the container somewhere `build_container.sh`
+    - Example definition file in `centos_base.def`
+    - copy the container to the base of this repository 
+    - set the correct name in `vars.sh`
+2. Create the squashfs with `new_env_install.sh` 
+    - Set container installation path (arbitrary)
+    - Set the target to the folder containing the `bin` folder
+    - Define installed packages in `new_env_install.sh`
+    - Or use singularity shell to install manually
+Steps **3** and **4** are the same as when packaging existing installation.

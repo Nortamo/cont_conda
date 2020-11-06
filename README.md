@@ -1,4 +1,13 @@
+
+# Warning
+**Issue with OOM killer not working for singularity + filesystem mounts under investigatio
+Don't use in production** 
+
+**Might requires nodes to be brought up again manually**
+
 # Instructions
+
+## Package existing installation
 
 1. Build the container somwhere `build_container.sh`
     - Example definition file in `centos_base.def`
@@ -22,3 +31,12 @@ singularity exec $_BIND_FLAGS --overlay=../$_SQUASH_FS_NAME ../$_IMG_NAME my_com
 ```
 
 `chmod +x my_command` to make it executable.
+
+### Note
+
+By default the application tree `/appl` is not mounted. If the target environment
+depends on other software installations in `/appl` and is also originally installed under
+`/appl`, mount the dependencies and `/appl/spack`. Don't mount `/appl` as bind mounts
+mask the `--overlay` mount. The singularity images might need changes to work for software environments with more complicated dependencies. 
+
+## Package new installation

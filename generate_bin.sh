@@ -26,7 +26,7 @@ echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh
 
 if [[ "$WRAPPERS" = true  ]]; then
 while IFS= read -r executable; do
-    cmd=$(readlink -f "$TARGET/bin/$executable")
+    cmd=$(echo "$TARGET//bin/$executable" | sed 's@//*@/@g')
     RUN_CMD="singularity exec \$_BIND_FLAGS --overlay=../\$_SQUASH_FS_NAME ../\$_IMG_NAME $cmd \$@"
     echo "#!/bin/bash" > deploy/bin/$executable
     echo "$PRE_COMMAND" >> deploy/bin/$executable

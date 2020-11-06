@@ -22,4 +22,6 @@ mkdir inst_dir/$_INSTPATH
 cd inst_dir/
 shopt -s extglob
 mv !($(echo $_INSTPATH | cut -f 2 -d "/")) $(echo $_INSTPATH | cut -f 2 -d "/")
-mksquashfs build_dir/ $_SQUASH_FS_NAME  -processors 10
+cd $CURR_DIR
+chmod o+rx -R inst_dir/
+mksquashfs inst_dir/ $_SQUASH_FS_NAME  -processors 10

@@ -49,4 +49,5 @@ mask the `--overlay` mount. The singularity images might need changes to work fo
     - Set the target to the folder containing the `bin` folder
     - Define installed packages in `new_env_install.sh`
     - Or use singularity shell to install manually
+
 Steps **3** and **4** are the same as when packaging existing installation.

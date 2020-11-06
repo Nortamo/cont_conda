@@ -23,6 +23,8 @@ _BIND_FLAGS="-B /users:/users  -B /projappl:/projappl -B /scratch:/scratch"
 echo "export _BIND_FLAGS=\"$_BIND_FLAGS\"" > deploy/common.sh
 echo "export _SQUASH_FS_NAME=$_SQUASH_FS_NAME" >> deploy/common.sh
 echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh
+
+if [[ "$WRAPPERS" = true  ]]; then
 while IFS= read -r executable; do
     cmd=$(readlink -f "$TARGET/bin/$executable")
     RUN_CMD="singularity exec \$_BIND_FLAGS --overlay=../\$_SQUASH_FS_NAME ../\$_IMG_NAME $cmd \$@"
@@ -31,6 +33,7 @@ while IFS= read -r executable; do
     echo $RUN_CMD >> deploy/bin/$executable
     chmod +x deploy/bin/$executable
 done <<< "$executables"
+fi
 
 cp $_IMG_NAME deploy
 cp $_SQUASH_FS_NAME deploy

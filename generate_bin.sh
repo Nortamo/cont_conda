@@ -27,7 +27,7 @@ REL_PATH_CMD='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && p
 PRE_COMMAND="source \$DIR/../common.sh"
 #_BIND_FLAGS="-B /users:/users  -B /projappl:/projappl -B /scratch:/scratch"
 _BIND_FLAGS=$(ls -1 / | awk '!/dev/'  | sed 's/^/\//g'  | awk '{ print $1,$1 }' | sed 's/ /:/g' | sed 's/^/-B /g' | tr '\n' ' ')
-_BIND_FLAGS="$_BIND_FLAGS -B \$DIR/../MASK:$MASK_DIR"
+_BIND_FLAGS="$_BIND_FLAGS -B \$DIR/../MASK:$MASK_DIR -B \$DIR/../MASK:\$DIR/../bin"
 echo "export _BIND_FLAGS=\"$_BIND_FLAGS\"" > deploy/common.sh
 echo "export _SQUASH_FS_NAME=$_SQUASH_FS_NAME" >> deploy/common.sh
 echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh

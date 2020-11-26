@@ -7,11 +7,14 @@ mkdir inst_dir
 CURR_DIR=$PWD
 DOLL=$
 cat <<EOF > _sing_inst_script.sh
+cp $SPEC_FILE $_INSTPATH
 cd $_INSTPATH
 curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output Miniconda_inst.sh
 bash Miniconda_inst.sh -b -p $TARGET
 eval "${DOLL}($TARGET/bin/conda shell.bash hook)"
-conda install -y numpy
+conda create --name $ENV_NAME  --file $SPEC_FILE 
+cd $TARGET
+rm -rf ${DOLL}(ls | sed 's/envs//g' | tr '\n' ' ')
 EOF
 
 singularity exec --contain -B $TMPDIR:/tmp -B $CURR_DIR:$CURR_DIR -B inst_dir:$_INSTPATH $_IMG_NAME bash -c "cd $CURR_DIR && source _sing_inst_script.sh"

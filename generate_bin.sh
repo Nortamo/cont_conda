@@ -31,8 +31,8 @@ _BIND_FLAGS="$_BIND_FLAGS -B \$DIR/../MASK:$MASK_DIR -B \$DIR/../MASK:\$DIR/../b
 echo "export _BIND_FLAGS=\"$_BIND_FLAGS\"" > deploy/common.sh
 echo "export _SQUASH_FS_NAME=$_SQUASH_FS_NAME" >> deploy/common.sh
 echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh
-echo "export SINGULARITYENV_PATH=$TARGET/bin:$PATH" >> deploy/common.sh
-echo "export SINGULARITYENV_LD_LIBRARY_PATH=$TARGET/lib/:$LD_LIBRARY_PATH" >> deploy/common.sh
+echo "export SINGULARITYENV_PATH=$TARGET/bin:\$PATH" >> deploy/common.sh
+echo "export SINGULARITYENV_LD_LIBRARY_PATH=$TARGET/lib/:\$LD_LIBRARY_PATH" >> deploy/common.sh
 
 # Dump extra environment variables
 printenv | grep _EXTRA_ENV_ | sed 's/_EXTRA_ENV_/export /g' >> deploy/common.sh

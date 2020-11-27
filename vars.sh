@@ -24,7 +24,10 @@ WRAPPERS=true
 
 # Define environment variables here which should be added to the 
 # Launch script
+# These could also be part of a module?
 
+export _EXTRA_ENV_PYTHONPATH="$TARGET/envs/$ENV_NAME/share/qgis/python:\$PYTHONPATH"
+export _EXTRA_ENV_PYTHONPATH="$TARGET/envs/$ENV_NAME/share/qgis/python/plugins:$_EXTRA_ENV_PYTHONPATH"
 export _EXTRA_ENV_GDAL_DATA="$TARGET/envs/$ENV_NAME/share/gdal"
 export _EXTRA_ENV_PROJ_LIB="$TARGET/envs/$ENV_NAME/share/proj"
 export _EXTRA_ENV_CPL_ZIP_ENCODING="UTF-8"

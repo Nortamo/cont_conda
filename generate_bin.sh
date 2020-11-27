@@ -34,6 +34,8 @@ echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh
 echo "export SINGULARITYENV_PATH=$TARGET/bin:$PATH" >> deploy/common.sh
 echo "export SINGULARITYENV_LD_LIBRARY_PATH=$TARGET/lib/:$LD_LIBRARY_PATH" >> deploy/common.sh
 
+# Dump extra environment variables
+printenv | grep _EXTRA_ENV_ | sed 's/_EXTRA_ENV_/export /g' >> deploy/common.sh
 
 
 if [[ "$WRAPPERS" = true  ]]; then

@@ -42,7 +42,7 @@ printenv | grep _EXTRA_ENV_ | sed 's/_EXTRA_ENV_/export /g' >> deploy/common.sh
 if [[ "$WRAPPERS" = true  ]]; then
 while IFS= read -r executable; do
     cmd=$(echo "$TARGET//bin/$executable" | sed 's@//*@/@g')
-    RUN_CMD="singularity --silent exec \$_BIND_FLAGS --overlay=\$DIR/../\$_SQUASH_FS_NAME \$DIR/../\$_IMG_NAME $cmd \$@"
+    RUN_CMD="singularity --silent exec \$_BIND_FLAGS --overlay=\$DIR/../\$_SQUASH_FS_NAME \$DIR/../\$_IMG_NAME $cmd \"\$@\""
     echo "#!/bin/bash" > deploy/bin/$executable
     echo "$REL_PATH_CMD" >> deploy/bin/$executable
     echo "$PRE_COMMAND" >> deploy/bin/$executable

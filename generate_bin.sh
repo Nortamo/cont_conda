@@ -48,6 +48,14 @@ while IFS= read -r executable; do
 done <<< "$executables"
 fi
 
+executable="_debug_shell"
+RUN_CMD="singularity --silent shell \$_BIND_FLAGS --overlay=\$DIR/../\$_SQUASH_FS_NAME \$DIR/../\$_IMG_NAME \$@"
+echo "#!/bin/bash" > deploy/bin/$executable
+echo "$REL_PATH_CMD" >> deploy/bin/$executable
+echo "$PRE_COMMAND" >> deploy/bin/$executable
+echo $RUN_CMD >> deploy/bin/$executable
+chmod +x deploy/bin/$executable
+
 cp $_IMG_NAME deploy
 cp $_SQUASH_FS_NAME deploy
 mkdir deploy/MASK

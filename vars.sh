@@ -20,6 +20,8 @@ SPEC_FILE=geoconda38-spec.txt
 MASK_DIR=/appl/soft/geo/conda/
 # Generate wrappers for executables 
 WRAPPERS=true
+# Mount host file system during installation phase
+MOUNT_DURING_INSTALL=false
 
 
 # Define environment variables here which should be added to the 

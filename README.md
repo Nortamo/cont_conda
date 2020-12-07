@@ -10,13 +10,17 @@ Use carefully in production**
     - copy the container to the base of this repository 
     - set the correct name in `vars.sh`
 
-2. Generate spec file for target installation
+2. Generate env file for target installation
     - `export CONDA_DEFAULT_ENV=target_env_name` 
-    - `conda env export> target_env_name.yaml`  
+    - `conda env export> target_env_name.yaml`
+    - Edit the generated yaml file if needed
+
 
 3. Define mandatory variables in `vars.sh` and add optional environment variables.
 
-4. Create installation with `new_env_install.sh` 
+
+4. Create installation with `new_env_install.sh`
+    - Edit the `_sing_inst_script.sh` generation in `new_env_install.sh` if aditional commands or environment setups are required.
 
 5. Generate a deploy folder which contains all the needed components `generate_bin.sh`
     - By default The script will generate executable wrappers for everything in `path_to_target/bin`

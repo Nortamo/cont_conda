@@ -12,7 +12,7 @@ Use carefully in production**
 
 2. Generate spec file for target installation
     - `export CONDA_DEFAULT_ENV=target_env_name` 
-    - `conda list --explicit > target_name-spec.txt`  
+    - `conda env export> target_env_name.yaml`  
 
 3. Define mandatory variables in `vars.sh` and add optional environment variables.
 

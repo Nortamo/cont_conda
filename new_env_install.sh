@@ -12,7 +12,7 @@ cd $_INSTPATH
 curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output Miniconda_inst.sh
 bash Miniconda_inst.sh -b -p $TARGET
 eval "${DOLL}($TARGET/bin/conda shell.bash hook)"
-conda create --name $ENV_NAME  --file $SPEC_FILE 
+conda env create --name $ENV_NAME -f $SPEC_FILE
 cd $TARGET
 rm -rf ${DOLL}(ls | sed 's/envs//g' | tr '\n' ' ')
 EOF

@@ -18,7 +18,14 @@ cd $TARGET
 rm -rf ${DOLL}(ls | sed 's/envs//g' | tr '\n' ' ')
 EOF
 
-singularity exec --contain -B $TMPDIR:/tmp -B $CURR_DIR:$CURR_DIR -B inst_dir:$_INSTPATH $_IMG_NAME bash -c "cd $CURR_DIR && source _sing_inst_script.sh"
+if [[ $MOUNT_DURING_INSTALL = "true" ]];then
+    _BIND_FLAGS=$(ls -1 / | awk '!/dev/' | awk '!/local_scratch/'  | sed 's/^/\//g'  | awk '{ print $1,$1 }' | sed 's/ /:/g' | sed 's/^/-B /g' | tr '\n' ' ')
+    test -d /local_scratch/ && export _BIND_FLAGS="$_BIND_FLAGS -B /local_scratch:/local_scratch"
+    singularity --silent exec  -B inst_dir:$_INSTPATH $_BIND_FLAGS $_IMG_NAME bash -c "cd $CURR_DIR && source _sing_inst_script.sh"     
+else
+    singularity exec --contain -B $TMPDIR:/tmp -B $CURR_DIR:$CURR_DIR -B inst_dir:$_INSTPATH $_IMG_NAME bash -c "cd $CURR_DIR && source _sing_inst_script.sh"
+fi
+
 
 rm  _sing_inst_script.sh
 rm inst_dir/Miniconda_inst.sh

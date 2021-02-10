@@ -6,15 +6,17 @@ mkdir inst_dir
 
 CURR_DIR=$PWD
 DOLL=$
+
 cat <<EOF > _sing_inst_script.sh
 set -e
-cp $SPEC_FILE $_INSTPATH
+cp $ENV_YAML $_INSTPATH
 cd $_INSTPATH
 curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output Miniconda_inst.sh
 bash Miniconda_inst.sh -b -p $TARGET
 eval "${DOLL}($TARGET/bin/conda shell.bash hook)"
 $PRE_INSTALL
-conda env create --name $ENV_NAME -f $SPEC_FILE
+conda env create --name $ENV_NAME -f $ENV_YAML
+conda activate $ENV_NAME
 $POST_INSTALL
 rm Miniconda_inst.sh
 EOF

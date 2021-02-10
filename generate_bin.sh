@@ -25,9 +25,16 @@ cd $BASE_DIR
 REL_PATH_CMD='DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"'
 
 PRE_COMMAND="source \$DIR/../common.sh"
-#_BIND_FLAGS="-B /users:/users  -B /projappl:/projappl -B /scratch:/scratch"
-_BIND_FLAGS=$(ls -1 / | awk '!/dev/' | awk '!/local_scratch/'  | sed 's/^/\//g'  | awk '{ print $1,$1 }' | sed 's/ /:/g' | sed 's/^/-B /g' | tr '\n' ' ')
-_BIND_FLAGS="$_BIND_FLAGS -B \$DIR/../MASK:$MASK_DIR -B \$DIR/../MASK:\$DIR/../bin"
+
+if [[ "$ISOLATE" -eq "true" ]];
+    _BIND_FLAGS="-B /users:/users  -B /projappl:/projappl -B /scratch:/scratch"
+    if [[ -d "/fmi" ]];then
+        _BIND_FLAGS="$_BIND_FLAGS -B /fmi:/fmi"
+    fi
+else
+    _BIND_FLAGS=$(ls -1 / | awk '!/dev/' | awk '!/local_scratch/'  | sed 's/^/\//g'  | awk '{ print $1,$1 }' | sed 's/ /:/g' | sed 's/^/-B /g' | tr '\n' ' ')
+    _BIND_FLAGS="$_BIND_FLAGS -B \$DIR/../MASK:$MASK_DIR -B \$DIR/../MASK:\$DIR/../bin"
+fi
 echo "export _BIND_FLAGS=\"$_BIND_FLAGS\"" > deploy/common.sh
 echo "export _SQUASH_FS_NAME=$_SQUASH_FS_NAME" >> deploy/common.sh
 echo "export _IMG_NAME=\"$_IMG_NAME\"" >> deploy/common.sh
@@ -41,13 +48,15 @@ printenv | grep _EXTRA_ENV_ | sed 's/_EXTRA_ENV_/export /g' >> deploy/common.sh
 
 if [[ "$WRAPPERS" = true  ]]; then
 while IFS= read -r executable; do
-    cmd=$(echo "$TARGET//bin/$executable" | sed 's@//*@/@g')
-    RUN_CMD="singularity --silent exec \$_BIND_FLAGS --overlay=\$DIR/../\$_SQUASH_FS_NAME \$DIR/../\$_IMG_NAME $cmd \"\$@\""
-    echo "#!/bin/bash" > deploy/bin/$executable
-    echo "$REL_PATH_CMD" >> deploy/bin/$executable
-    echo "$PRE_COMMAND" >> deploy/bin/$executable
-    echo $RUN_CMD >> deploy/bin/$executable
-    chmod +x deploy/bin/$executable
+    if [[ -x "$executable" ]]; then
+        cmd=$(echo "$TARGET//bin/$executable" | sed 's@//*@/@g')
+        RUN_CMD="singularity --silent exec \$_BIND_FLAGS --overlay=\$DIR/../\$_SQUASH_FS_NAME \$DIR/../\$_IMG_NAME $cmd \"\$@\""
+        echo "#!/bin/bash" > deploy/bin/$executable
+        echo "$REL_PATH_CMD" >> deploy/bin/$executable
+        echo "$PRE_COMMAND" >> deploy/bin/$executable
+        echo $RUN_CMD >> deploy/bin/$executable
+        chmod +x deploy/bin/$executable
+    fi
 done <<< "$executables"
 fi
 

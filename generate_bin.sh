@@ -7,9 +7,7 @@ mkdir mount_dir
 squashfuse $_SQUASH_FS_NAME mount_dir
 
 
-if [[ ! -z "$ENV_NAME" ]]; then
-    TARGET="$TARGET/envs/$ENV_NAME"
-fi
+TARGET="$TARGET/envs/$ENV_NAME"
 
 FT=$(echo $TARGET | sed 's@^/@@g')
 BASE_DIR=$PWD

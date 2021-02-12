@@ -1,19 +1,18 @@
-overlay: basic_calc
+overlay_name: basic_calc
 sing_image: centos.sif 
 env_name: first_env
-env_yaml: base.yaml
-env_explicit: null 
+env_file: base.yaml
 pip_installs: requirements.txt
 wrappers: true
 isolate: false
 mount_during_install: false
 conda_version: latest
 extra_envs:
-    # Relative to env installation directory
-    # Absolute as is
+    # $env_root
+    # $install_root
     # valid types are set append prepend
     - name: PYTHONPATH
-      value: share
+      value: $env_root/share
       type: prepend
     - name: CSC_TEST
       value: yes
@@ -26,4 +25,3 @@ pre_install:
     - 'echo "Hello from the installation"'
 post_install: 
     - "pip install python-igraph
-

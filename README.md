@@ -12,6 +12,11 @@ is in the same directory as the config.
 cont_conda example_inputs/def.yaml /path/to/install
 ```
 
+The command can be run from anywhere (so you don't have to be in this repository),
+but intermediate files are created in the current directory (they are removed when the build is completed.)
+Prefer doing this on a local disk as one step is creating a squasfs image. 
+
+
 ## Creating the input
 
 The tool support both explicit and yaml files for the conda env file.

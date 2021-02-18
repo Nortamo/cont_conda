@@ -1,0 +1,57 @@
+#!/bin/bash 
+
+rm -rf cont_build
+mkdir cont_build
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cp $DIR/internals/* cont_build 
+TD=$(readlink -f "$2")
+CD=$(readlink -f "$1")
+
+cd cont_build
+
+if [[ -z "$CD" ]];then
+    echo "First argument needs to be a .yaml config file"
+    echo "Look for examples in example_inputs"
+fi
+
+
+if [[ ! -d "$TD" ]]; then
+    echo "Second argument has to be an existing directory"
+fi
+
+echo -e "\nCONT CONDA (BY CSC)"
+echo "===================="
+echo "Parsing config"
+echo "===================="
+
+python3 parse_def.py $CD 
+bash move.sh $(dirname $CD)
+
+echo -e "\nCONT CONDA (BY CSC)"
+echo "===================="
+echo "Performing installation"
+echo "===================="
+
+bash new_env_install.sh
+
+echo -e "\nCONT CONDA (BY CSC)"
+echo "===================="
+echo "Creating Wrappers"
+echo "===================="
+
+bash generate_bin.sh 
+
+echo -e "\nCONT CONDA (BY CSC)"
+echo "===================="
+echo "Installing to $TD"
+echo "===================="
+
+cp -r deploy/* $TD
+
+echo -e "\nCONT CONDA (BY CSC)"
+echo "===================="
+echo "Installation completed"
+echo "===================="
+
+cd ..
+rm -rf cont_build

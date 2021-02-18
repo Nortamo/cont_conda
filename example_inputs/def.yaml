@@ -1,5 +1,6 @@
 overlay_name: basic_calc.sqfs
-sing_image: centos_base.sif 
+# centos:7.7 is used by default if there is no image specified
+sing_image: null 
 env_name: first_env
 env_file: base.txt
 pip_installs: requirements.txt

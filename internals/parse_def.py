@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import yaml
 import sys
+import os
 input_file=sys.argv[1]
 
 yaml_file=open(input_file)
@@ -10,6 +11,14 @@ pyf = yaml.load(yaml_file, Loader=yaml.FullLoader)
 
 SQUASH_FS_NAME=pyf["overlay_name"]
 IMG_NAME=pyf["sing_image"]
+if IMG_NAME==None:
+    print("Downloading singularity image")
+    IMG_NAME="centos.sif"
+    os.system("singularity pull centos.sif library://centos:7.7")
+else:
+    with open('move.sh',"w") as fp:
+        fp.write("cp $1/{} .\n".format(IMG_NAME))
+
 INSTPATH="/CSC_SING_INST"
 install_root=INSTPATH
 ENV_NAME=pyf["env_name"]
@@ -19,6 +28,21 @@ env_root=install_root+"/conda/envs/"+ENV_NAME
 
 ENV_FILE=pyf["env_file"]
 REQUIREMENTS_TXT=pyf["pip_installs"]
+
+if os.path.exists("move.sh"):
+    append_write = 'a' # append if already exists
+else:
+    append_write = 'w' # make a new file if not
+
+if ENV_FILE!=None:
+    with open('move.sh',append_write) as fp:
+        fp.write("cp $1/{} .\n".format(ENV_FILE))
+if REQUIREMENTS_TXT!=None:
+    with open('move.sh',"a") as fp:
+        fp.write("cp $1/{} .\n".format(REQUIREMENTS_TXT))
+    
+
+
 WRAPPERS=pyf["wrappers"]
 CV=pyf["conda_version"]
 PRE_INSTALL=pyf["pre_install"]

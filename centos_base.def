@@ -1,5 +1,0 @@
-BootStrap: library
-From: centos:7.7
-%runscript
-    "$@"
-

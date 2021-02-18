@@ -1,7 +1,7 @@
-overlay_name: basic_calc
-sing_image: centos.sif 
+overlay_name: basic_calc.sqfs
+sing_image: centos_base.sif 
 env_name: first_env
-env_file: base.yaml
+env_file: base.txt
 pip_installs: requirements.txt
 wrappers: true
 isolate: false
@@ -11,17 +11,20 @@ extra_envs:
     # $env_root
     # $install_root
     # valid types are set append prepend
+    # Only applies to container runtime
     - name: PYTHONPATH
       value: $env_root/share
       type: prepend
     - name: CSC_TEST
       value: yes
       type: set
-# commands are executed in the parent directory of
-# the env location
 # Pre install runs after conda has been activated but before env created
 # post install runs after env creation with env activated
+# Commands are run in sequence
+# $env_root and $install_root usable
+# Note that only the the envs/env_name remains from the conda installation
+# So don't place stuff here which should be keept
 pre_install:
     - 'echo "Hello from the installation"'
 post_install: 
-    - "pip install python-igraph
+    - "pip install python-igraph"

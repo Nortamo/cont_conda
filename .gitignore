@@ -4,3 +4,5 @@ deploy
 build_dir
 mound_dir
 inst_dir
+vars.sh
+envs.txt
